@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Bot Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container" id="login">
+    <h2>Masukkan Token Bot</h2>
+    <input type="password" id="botToken" placeholder="Bot Token dari BotFather">
+    <button onclick="checkToken()">Lanjut</button>
+    <p id="status"></p>
+  </div>
+
+  <div class="container" id="panel" style="display:none;">
+    <h2>Bot Panel</h2>
+
+    <h3>Update Bot Info</h3>
+    <input type="text" id="botName" placeholder="Nama baru bot">
+    <button onclick="setName()">Update Nama</button>
+    <br><br>
+    <input type="text" id="botBio" placeholder="Bio baru bot">
+    <button onclick="setBio()">Update Bio</button>
+    <br><br>
+    <input type="file" id="botPhoto">
+    <button onclick="setPhoto()">Update Foto</button>
+
+    <hr>
+
+    <h3>Kirim Pesan</h3>
+    <input type="text" id="chatId" placeholder="Chat ID user">
+    <textarea id="messageText" placeholder="Pesan custom"></textarea>
+    <input type="number" id="msgCount" placeholder="Jumlah (max 200)" max="200" min="1">
+    <button onclick="sendMessage()">Kirim</button>
+    <p id="msgStatus"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
