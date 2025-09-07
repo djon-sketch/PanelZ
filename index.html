@@ -3,40 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Telegram Bot Panel</title>
+  <title>Bot Hunter Panel</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Background animasi -->
+  <div class="bg"></div>
+
+  <!-- Login -->
   <div class="container" id="login">
-    <h2>Masukkan Token Bot</h2>
-    <input type="password" id="botToken" placeholder="Bot Token dari BotFather">
-    <button onclick="checkToken()">Lanjut</button>
+    <h1>⚡ Bot Hunter Panel ⚡</h1>
+    <p class="subtitle">Masukkan token bot kamu untuk mulai mengontrol</p>
+    <input type="password" id="botToken" placeholder="Token BotFather">
+    <button onclick="checkToken()">Masuk</button>
     <p id="status"></p>
   </div>
 
+  <!-- Dashboard -->
   <div class="container" id="panel" style="display:none;">
-    <h2>Bot Panel</h2>
+    <h1>Dashboard</h1>
+    <p class="subtitle">Selamat datang, Sniper 🔫</p>
 
-    <h3>Update Bot Info</h3>
-    <input type="text" id="botName" placeholder="Nama baru bot">
-    <button onclick="setName()">Update Nama</button>
-    <br><br>
-    <input type="text" id="botBio" placeholder="Bio baru bot">
-    <button onclick="setBio()">Update Bio</button>
-    <br><br>
-    <input type="file" id="botPhoto">
-    <button onclick="setPhoto()">Update Foto</button>
+    <!-- Status Bot -->
+    <div class="section" id="botStatus">
+      <h2>Status Bot</h2>
+      <div class="status-box">
+        <p><strong>Nama:</strong> <span id="statusName">-</span></p>
+        <p><strong>Username:</strong> <span id="statusUsername">-</span></p>
+        <p><strong>Link:</strong> <a id="statusLink" href="#" target="_blank">-</a></p>
+      </div>
+    </div>
 
-    <hr>
+    <!-- Setting Bot -->
+    <div class="section">
+      <h2>⚙️ Bot Settings</h2>
+      <input type="text" id="botName" placeholder="Nama baru bot">
+      <button onclick="setName()">Update Nama</button>
+      <input type="text" id="botBio" placeholder="Bio baru bot">
+      <button onclick="setBio()">Update Bio</button>
+    </div>
 
-    <h3>Kirim Pesan</h3>
-    <input type="text" id="chatId" placeholder="Chat ID user">
-    <textarea id="messageText" placeholder="Pesan custom"></textarea>
-    <input type="number" id="msgCount" placeholder="Jumlah (max 200)" max="200" min="1">
-    <button onclick="sendMessage()">Kirim</button>
-    <p id="msgStatus"></p>
+    <!-- Kirim Pesan -->
+    <div class="section">
+      <h2>📩 Kirim Pesan</h2>
+      <input type="text" id="chatId" placeholder="Chat ID user">
+      <textarea id="messageText" placeholder="Pesan custom"></textarea>
+      <input type="number" id="msgCount" placeholder="Jumlah (max 200)" max="200" min="1">
+      <button onclick="sendMessage()">Kirim</button>
+      <p id="msgStatus"></p>
+    </div>
   </div>
 
   <script src="script.js"></script>
 </body>
-</html>
+  </html>
