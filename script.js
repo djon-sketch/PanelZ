@@ -1,78 +1,86 @@
-let token = "";
+let botToken = "";
 
-async function checkToken() {
-  token = document.getElementById("botToken").value.trim();
-  if (!token) {
-    document.getElementById("status").innerText = "❌ Token kosong!";
+// ✅ Connect Bot
+async function connectBot() {
+  botToken = document.getElementById("botToken").value.trim();
+  const status = document.getElementById("botStatus");
+
+  if (!botToken) {
+    status.textContent = "❌ Token tidak boleh kosong!";
     return;
   }
 
   try {
-    const res = await fetch(`https://api.telegram.org/bot${token}/getMe`);
+    const res = await fetch(`https://api.telegram.org/bot${botToken}/getMe`);
     const data = await res.json();
 
     if (data.ok) {
-      // tampilkan dashboard
-      document.getElementById("login").style.display = "none";
-      document.getElementById("panel").style.display = "block";
+      document.getElementById("botName").textContent = data.result.first_name || "-";
+      document.getElementById("botUsername").textContent = data.result.username || "-";
+      const link = `https://t.me/${data.result.username}`;
+      document.getElementById("botLink").textContent = link;
+      document.getElementById("botLink").href = link;
 
-      // isi status bot
-      document.getElementById("statusName").innerText = data.result.first_name || "-";
-      document.getElementById("statusUsername").innerText = data.result.username || "-";
-      document.getElementById("statusLink").innerText = `https://t.me/${data.result.username}`;
-      document.getElementById("statusLink").href = `https://t.me/${data.result.username}`;
+      status.textContent = "✅ Bot berhasil terkoneksi!";
+      document.getElementById("botInfo").classList.remove("hidden");
+      document.getElementById("messageSection").classList.remove("hidden");
+      document.getElementById("zalgoSection").classList.remove("hidden");
     } else {
-      document.getElementById("status").innerText = "❌ Token tidak valid!";
+      status.textContent = "❌ Token salah atau bot tidak valid.";
     }
-  } catch (e) {
-    document.getElementById("status").innerText = "⚠️ Gagal koneksi ke Telegram API.";
+  } catch (err) {
+    status.textContent = "❌ Gagal menghubungkan bot.";
   }
 }
 
-// Update nama bot
-async function setName() {
-  const name = document.getElementById("botName").value;
-  if (!name) return alert("Isi nama baru dulu");
-  await fetch(`https://api.telegram.org/bot${token}/setMyName`, {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({name})
-  });
-  alert("✅ Nama bot diperbarui!");
-}
-
-// Update bio bot
-async function setBio() {
-  const bio = document.getElementById("botBio").value;
-  if (!bio) return alert("Isi bio baru dulu");
-  await fetch(`https://api.telegram.org/bot${token}/setMyDescription`, {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({description: bio})
-  });
-  alert("✅ Bio bot diperbarui!");
-}
-
-// Kirim pesan
+// ✅ Kirim Pesan
 async function sendMessage() {
-  const chatId = document.getElementById("chatId").value;
-  const msg = document.getElementById("messageText").value;
-  let count = parseInt(document.getElementById("msgCount").value);
+  const chatId = document.getElementById("chatId").value.trim();
+  const message = document.getElementById("messageText").value;
+  const count = Math.min(350, parseInt(document.getElementById("messageCount").value) || 1);
+  const status = document.getElementById("sendStatus");
 
-  if (!chatId || !msg) {
-    document.getElementById("msgStatus").innerText = "❌ Chat ID & pesan wajib diisi!";
+  if (!chatId || !message) {
+    status.textContent = "❌ Chat ID dan Pesan harus diisi!";
     return;
   }
-  if (!count || count < 1) count = 1;
-  if (count > 200) count = 200;
 
-  for (let i = 0; i < count; i++) {
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({chat_id: chatId, text: msg})
-    });
-  }
-
-  document.getElementById("msgStatus").innerText = `✅ Pesan terkirim (${count}x)`;
+  try {
+    for (let i = 0; i < count; i++) {
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: chatId, text: message })
+      });
     }
+    status.textContent = `✅ Pesan terkirim (${count}x)`;
+  } catch (err) {
+    status.textContent = "❌ Gagal mengirim pesan.";
+  }
+}
+
+// --------------------
+// ⚡ ZALGO GENERATOR
+// --------------------
+const zalgo_up = ["̍","̎","̄","̅","̿","̑","̆","̐","͒","͗","͑","̇","̈","̊","͂","̓","̈","͊","͋","͌","̃","̂","̌","͐","̀","́","̋","̏","̒","̓","̔","̽","̉","ͣ","ͤ","ͥ","ͦ","ͧ","ͨ","ͩ","ͪ","ͫ","ͬ","ͭ","ͮ","ͯ","̾","͛","͆","̚"];
+const zalgo_down = ["̖","̗","̘","̙","̜","̝","̞","̟","̠","̤","̥","̦","̩","̪","̫","̬","̭","̮","̯","̰","̱","̲","̳","̹","̺","̻","̼","ͅ","͇","͈","͉","͍","͎","͓","͔","͕","͖","͙","͚","̣"];
+const zalgo_mid = ["̕","̛","̀","́","͘","̡","̢","̧","̨","̴","̵","̶","͜","͝","͞","͟","͠","͢","̸","̷","͡"," ҉"];
+
+function rand(max){ return Math.floor(Math.random() * max); }
+
+function zalgo(text){
+  let result = "";
+  for (let ch of text) {
+    result += ch;
+    let num_up = rand(5), num_mid = rand(3), num_down = rand(5);
+    for (let i=0; i<num_up; i++) result += zalgo_up[rand(zalgo_up.length)];
+    for (let i=0; i<num_mid; i++) result += zalgo_mid[rand(zalgo_mid.length)];
+    for (let i=0; i<num_down; i++) result += zalgo_down[rand(zalgo_down.length)];
+  }
+  return result;
+}
+
+function generateZalgo() {
+  const input = document.getElementById("zalgoInput").value;
+  document.getElementById("zalgoOutput").value = zalgo(input || "HELLO WORLD");
+        }
