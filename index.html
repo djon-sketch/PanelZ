@@ -1,59 +1,49 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bot Hunter Panel</title>
+  <title>Telegram Bot Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Background animasi -->
-  <div class="bg"></div>
+  <div class="dashboard">
+    <h2>Telegram Bot Dashboard</h2>
 
-  <!-- Login -->
-  <div class="container" id="login">
-    <h1>⚡ Bot Hunter Panel ⚡</h1>
-    <p class="subtitle">Masukkan token bot kamu untuk mulai mengontrol</p>
-    <input type="password" id="botToken" placeholder="Token BotFather">
-    <button onclick="checkToken()">Masuk</button>
-    <p id="status"></p>
-  </div>
-
-  <!-- Dashboard -->
-  <div class="container" id="panel" style="display:none;">
-    <h1>Dashboard</h1>
-    <p class="subtitle">Selamat datang, Sniper 🔫</p>
-
-    <!-- Status Bot -->
-    <div class="section" id="botStatus">
-      <h2>Status Bot</h2>
-      <div class="status-box">
-        <p><strong>Nama:</strong> <span id="statusName">-</span></p>
-        <p><strong>Username:</strong> <span id="statusUsername">-</span></p>
-        <p><strong>Link:</strong> <a id="statusLink" href="#" target="_blank">-</a></p>
-      </div>
+    <div class="section">
+      <h3>🔑 Masukkan Token Bot</h3>
+      <input type="text" id="botToken" placeholder="Masukkan token dari BotFather">
+      <button onclick="connectBot()">Connect</button>
+      <p id="botStatus"></p>
     </div>
 
-    <!-- Setting Bot -->
-    <div class="section">
-      <h2>⚙️ Bot Settings</h2>
-      <input type="text" id="botName" placeholder="Nama baru bot">
-      <button onclick="setName()">Update Nama</button>
-      <input type="text" id="botBio" placeholder="Bio baru bot">
-      <button onclick="setBio()">Update Bio</button>
+    <div id="botInfo" class="hidden">
+      <hr>
+      <h3>🤖 Status Bot</h3>
+      <p><b>Nama:</b> <span id="botName">-</span></p>
+      <p><b>Username:</b> <span id="botUsername">-</span></p>
+      <p><b>Link:</b> <a id="botLink" href="#" target="_blank">-</a></p>
     </div>
 
-    <!-- Kirim Pesan -->
-    <div class="section">
-      <h2>📩 Kirim Pesan</h2>
-      <input type="text" id="chatId" placeholder="Chat ID user">
-      <textarea id="messageText" placeholder="Pesan custom"></textarea>
-      <input type="number" id="msgCount" placeholder="Jumlah (max 200)" max="200" min="1">
+    <div id="messageSection" class="hidden">
+      <hr>
+      <h3>📨 Kirim Pesan</h3>
+      <input type="text" id="chatId" placeholder="Masukkan Chat ID">
+      <textarea id="messageText" placeholder="Tulis pesan..." rows="4"></textarea>
+      <label>Jumlah (max 350):</label>
+      <input type="number" id="messageCount" min="1" max="350" value="1">
       <button onclick="sendMessage()">Kirim</button>
-      <p id="msgStatus"></p>
+      <p id="sendStatus"></p>
+    </div>
+
+    <div id="zalgoSection" class="hidden">
+      <hr>
+      <h3>Text Bug Generator</h3>
+      <textarea id="zalgoInput" placeholder="Tulis teks..." rows="3"></textarea><br>
+      <button onclick="generateZalgo()">Generate</button>
+      <textarea id="zalgoOutput" rows="6" readonly></textarea>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
-  </html>
+</html>
